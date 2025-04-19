@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 export default function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -7,7 +8,7 @@ export default function App() {
 
   const handleClick = (index) => {
     if (board[index] || winner) return;
-    const newBoard = board.slice();
+    const newBoard = [...board];
     newBoard[index] = isXNext ? "X" : "O";
     setBoard(newBoard);
     setIsXNext(!isXNext);
@@ -20,29 +21,21 @@ export default function App() {
 
   const renderSquare = (i) => (
     <button
-      key={i}
+      className="square"
       onClick={() => handleClick(i)}
-      className="w-20 h-20 border text-2xl font-bold flex items-center justify-center"
     >
       {board[i]}
     </button>
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-4">
-      <h1 className="text-3xl font-semibold">Tic Tac Toe</h1>
-      <div className="grid grid-cols-3 gap-1">
+    <div className="game">
+      <h1>Tic Tac Toe</h1>
+      <div className="board">
         {board.map((_, i) => renderSquare(i))}
       </div>
-      <p className="text-lg">
-        {winner ? `Winner: ${winner}` : `Next Player: ${isXNext ? "X" : "O"}`}
-      </p>
-      <button
-        onClick={resetGame}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Reset Game
-      </button>
+      <p>{winner ? `Winner: ${winner}` : `Next Player: ${isXNext ? "X" : "O"}`}</p>
+      <button onClick={resetGame} className="reset">Reset</button>
     </div>
   );
 }
